@@ -4,5 +4,5 @@ python-multipart
 pypdf
 reportlab
 httpx
-groqpython-dotenv
+groq
 python-dotenv
