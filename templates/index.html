@@ -1,0 +1,1040 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ResumeIQ — AI Resume Analyzer</title>
+
+<link
+    rel="stylesheet"
+    href="/static/style.css"
+>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        Resume<span>IQ</span>
+    </div>
+
+
+    <div class="header-right">
+
+        <span>
+            AI Resume Intelligence
+        </span>
+
+        <button
+            class="theme-button"
+            onclick="toggleTheme()"
+        >
+            ◐
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<main>
+
+
+<section class="hero">
+
+    <div class="badge">
+        ✦ AI-POWERED RESUME ANALYZER
+    </div>
+
+
+    <h1>
+        Turn Your Resume Into
+        <span>Career Intelligence.</span>
+    </h1>
+
+
+    <p>
+        Analyze your resume, discover your strengths,
+        identify missing skills and measure your
+        compatibility with a job.
+    </p>
+
+</section>
+
+
+
+<section class="upload-card">
+
+
+    <div class="upload-icon">
+        📄
+    </div>
+
+
+    <h2>
+        Analyze Your Resume
+    </h2>
+
+
+    <p>
+        Upload your PDF resume to begin.
+    </p>
+
+
+    <label>
+        Resume PDF
+    </label>
+
+
+    <input
+        type="file"
+        id="resume"
+        accept=".pdf"
+    >
+
+
+    <label>
+        Job Description
+        <small>
+            Optional
+        </small>
+    </label>
+
+
+    <textarea
+        id="jobDescription"
+        placeholder="Paste the job description here to calculate your job match..."
+    ></textarea>
+
+
+    <button
+        id="analyzeButton"
+        onclick="analyzeResume()"
+    >
+
+        Analyze Resume
+        →
+
+    </button>
+
+
+    <div id="status"></div>
+
+
+</section>
+
+
+
+<section
+    id="results"
+    class="results"
+>
+
+
+    <div class="results-header">
+
+        <div>
+
+            <p class="eyebrow">
+                ANALYSIS COMPLETE
+            </p>
+
+            <h2>
+                Resume Intelligence
+            </h2>
+
+        </div>
+
+
+        <button
+            id="downloadButton"
+            class="download-button"
+            onclick="downloadReport()"
+        >
+            ↓ Download Report
+        </button>
+
+    </div>
+
+
+
+    <div class="score-card">
+
+
+        <div class="score-circle">
+
+            <div
+                id="score"
+                class="score-number"
+            >
+                0
+            </div>
+
+            <span>
+                /100
+            </span>
+
+        </div>
+
+
+        <div class="score-info">
+
+            <p class="eyebrow">
+                OVERALL RESUME SCORE
+            </p>
+
+            <h2 id="rating">
+                —
+            </h2>
+
+            <p id="summary">
+                —
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="stats">
+
+
+        <div class="stat">
+
+            <span class="stat-icon">
+                🎯
+            </span>
+
+            <strong id="match">
+                0%
+            </strong>
+
+            <span>
+                Job Match
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span class="stat-icon">
+                🧠
+            </span>
+
+            <strong id="skillCount">
+                0
+            </strong>
+
+            <span>
+                Skills Found
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span class="stat-icon">
+                📝
+            </span>
+
+            <strong id="words">
+                0
+            </strong>
+
+            <span>
+                Words
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="grid">
+
+
+        <div class="panel">
+
+            <h3>
+                🧠 Skills Detected
+            </h3>
+
+            <div
+                id="skills"
+                class="skills"
+            ></div>
+
+        </div>
+
+
+
+        <div class="panel">
+
+            <h3>
+                🎯 Matched Skills
+            </h3>
+
+            <div
+                id="matched"
+                class="skills"
+            ></div>
+
+        </div>
+
+
+
+        <div class="panel warning-panel">
+
+            <h3>
+                ⚠️ Missing Skills
+            </h3>
+
+            <div
+                id="missing"
+                class="skills"
+            ></div>
+
+        </div>
+
+
+
+        <div class="panel">
+
+            <h3>
+                💡 Recommendations
+            </h3>
+
+            <ul
+                id="recommendations"
+            ></ul>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="panel quality-panel">
+
+        <h3>
+            📈 Resume Quality Breakdown
+        </h3>
+
+
+        <div class="quality-row">
+
+            <span>
+                Skills
+            </span>
+
+            <div class="bar">
+                <div
+                    id="skillsBar"
+                    class="bar-fill"
+                ></div>
+            </div>
+
+        </div>
+
+
+        <div class="quality-row">
+
+            <span>
+                Job Match
+            </span>
+
+            <div class="bar">
+                <div
+                    id="matchBar"
+                    class="bar-fill"
+                ></div>
+            </div>
+
+        </div>
+
+
+        <div class="quality-row">
+
+            <span>
+                Resume Structure
+            </span>
+
+            <div class="bar">
+                <div
+                    id="structureBar"
+                    class="bar-fill"
+                ></div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- AI ANALYSIS -->
+
+    <div
+        id="aiAnalysis"
+        class="ai-analysis"
+    >
+
+        <div class="ai-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    ✦ AI POWERED
+                </p>
+
+                <h2>
+                    AI Resume Analysis
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="ai-summary panel">
+
+            <h3>
+                🧠 AI Summary
+            </h3>
+
+            <p id="aiSummary">
+                —
+            </p>
+
+        </div>
+
+
+
+        <div class="ai-grid">
+
+
+            <div class="panel">
+
+                <h3>
+                    💪 Strengths
+                </h3>
+
+                <ul id="aiStrengths"></ul>
+
+            </div>
+
+
+
+            <div class="panel">
+
+                <h3>
+                    ⚠️ Weaknesses
+                </h3>
+
+                <ul id="aiWeaknesses"></ul>
+
+            </div>
+
+
+
+            <div class="panel">
+
+                <h3>
+                    💡 Improvements
+                </h3>
+
+                <ul id="aiImprovements"></ul>
+
+            </div>
+
+
+
+            <div class="panel">
+
+                <h3>
+                    🎤 Interview Questions
+                </h3>
+
+                <ul id="aiQuestions"></ul>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="panel rewritten-panel">
+
+            <h3>
+                ✍️ Improved Resume Bullet
+            </h3>
+
+            <p
+                id="aiRewrittenBullet"
+                class="rewritten-bullet"
+            >
+                —
+            </p>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+</main>
+
+
+
+<script>
+
+
+let currentReportId = null;
+
+
+
+async function analyzeResume() {
+
+
+    const input =
+        document.getElementById(
+            "resume"
+        );
+
+
+    const job =
+        document.getElementById(
+            "jobDescription"
+        );
+
+
+    const button =
+        document.getElementById(
+            "analyzeButton"
+        );
+
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    if (!input.files.length) {
+
+        status.textContent =
+            "Please choose a PDF resume.";
+
+        return;
+
+    }
+
+
+    const file =
+        input.files[0];
+
+
+    if (
+        !file.name
+            .toLowerCase()
+            .endsWith(".pdf")
+    ) {
+
+        status.textContent =
+            "Please upload a PDF file.";
+
+        return;
+
+    }
+
+
+    const formData =
+        new FormData();
+
+
+    formData.append(
+        "file",
+        file
+    );
+
+
+    formData.append(
+        "job_description",
+        job.value
+    );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Analyzing...";
+
+
+    status.textContent =
+        "ResumeIQ is analyzing your resume...";
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "/analyze",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.error) {
+
+            throw new Error(
+                data.error
+            );
+
+        }
+
+
+        currentReportId =
+            data.report_id;
+
+
+        showResults(data);
+
+
+        status.textContent =
+            "Analysis complete ✓";
+
+
+        document
+            .getElementById("results")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        status.textContent =
+            error.message ||
+            "Something went wrong.";
+
+    }
+
+
+    button.disabled = false;
+
+    button.textContent =
+        "Analyze Resume →";
+
+}
+
+
+
+function showResults(data) {
+
+
+    document
+        .getElementById("results")
+        .classList.add("show");
+
+
+    animateNumber(
+        "score",
+        data.score
+    );
+
+
+    document
+        .getElementById("match")
+        .textContent =
+        data.match + "%";
+
+
+    document
+        .getElementById("skillCount")
+        .textContent =
+        data.skills.length;
+
+
+    document
+        .getElementById("words")
+        .textContent =
+        data.word_count;
+
+
+    document
+        .getElementById("rating")
+        .textContent =
+        data.rating;
+
+
+    document
+        .getElementById("summary")
+        .textContent =
+        data.summary;
+
+
+    renderSkills(
+        "skills",
+        data.skills
+    );
+
+
+    renderSkills(
+        "matched",
+        data.matched
+    );
+
+
+    renderSkills(
+        "missing",
+        data.missing
+    );
+
+
+    renderRecommendations(
+        data.recommendations
+    );
+
+
+    document
+        .getElementById("skillsBar")
+        .style.width =
+        Math.min(
+            data.skills.length * 10,
+            100
+        ) + "%";
+
+
+    document
+        .getElementById("matchBar")
+        .style.width =
+        data.match + "%";
+
+
+    document
+        .getElementById("structureBar")
+        .style.width =
+        data.score + "%";
+
+
+    renderAIAnalysis(
+        data.ai
+    );
+
+}
+
+
+
+function renderAIAnalysis(ai) {
+
+
+    const section =
+        document.getElementById(
+            "aiAnalysis"
+        );
+
+
+    if (
+        !ai ||
+        !ai.available ||
+        !ai.analysis
+    ) {
+
+        section.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    section.style.display =
+        "block";
+
+
+    const analysis =
+        ai.analysis;
+
+
+    document
+        .getElementById("aiSummary")
+        .textContent =
+        analysis.summary || "No summary available.";
+
+
+    renderAIList(
+        "aiStrengths",
+        analysis.strengths
+    );
+
+
+    renderAIList(
+        "aiWeaknesses",
+        analysis.weaknesses
+    );
+
+
+    renderAIList(
+        "aiImprovements",
+        analysis.improvements
+    );
+
+
+    renderAIList(
+        "aiQuestions",
+        analysis.interview_questions
+    );
+
+
+    document
+        .getElementById("aiRewrittenBullet")
+        .textContent =
+        analysis.rewritten_bullet ||
+        "No rewritten bullet available.";
+
+}
+
+
+
+function renderAIList(
+    id,
+    items
+) {
+
+
+    const list =
+        document.getElementById(id);
+
+
+    list.innerHTML = "";
+
+
+    if (
+        !items ||
+        !items.length
+    ) {
+
+        const li =
+            document.createElement(
+                "li"
+            );
+
+        li.textContent =
+            "None available.";
+
+        list.appendChild(li);
+
+        return;
+
+    }
+
+
+    items.forEach(
+        item => {
+
+            const li =
+                document.createElement(
+                    "li"
+                );
+
+            li.textContent =
+                item;
+
+            list.appendChild(li);
+
+        }
+    );
+
+}
+
+
+
+function animateNumber(
+    id,
+    target
+) {
+
+
+    const element =
+        document.getElementById(id);
+
+
+    let current = 0;
+
+
+    const interval =
+        setInterval(() => {
+
+
+            current += 1;
+
+
+            element.textContent =
+                current;
+
+
+            if (current >= target) {
+
+                clearInterval(interval);
+
+            }
+
+
+        }, 15);
+
+}
+
+
+
+function renderSkills(
+    id,
+    skills
+) {
+
+
+    const container =
+        document.getElementById(id);
+
+
+    container.innerHTML = "";
+
+
+    if (!skills.length) {
+
+        container.innerHTML =
+            "<span class='empty'>None detected</span>";
+
+        return;
+
+    }
+
+
+    skills.forEach(
+        skill => {
+
+
+            const tag =
+                document.createElement(
+                    "span"
+                );
+
+
+            tag.className =
+                "skill";
+
+
+            tag.textContent =
+                skill;
+
+
+            container.appendChild(tag);
+
+        }
+    );
+
+}
+
+
+
+function renderRecommendations(
+    recommendations
+) {
+
+
+    const list =
+        document.getElementById(
+            "recommendations"
+        );
+
+
+    list.innerHTML = "";
+
+
+    recommendations.forEach(
+        recommendation => {
+
+
+            const li =
+                document.createElement(
+                    "li"
+                );
+
+
+            li.textContent =
+                recommendation;
+
+
+            list.appendChild(li);
+
+        }
+    );
+
+}
+
+
+
+function downloadReport() {
+
+
+    if (!currentReportId) {
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "/download-report/"
+        + currentReportId;
+
+}
+
+
+
+function toggleTheme() {
+
+    document.body.classList.toggle(
+        "dark"
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
+```
